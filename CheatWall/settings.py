@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-8w1bvb#-5jktqcl3nwk+bx8tp4(qk8n3dvw-9(w(3nyj(ronr='
 SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True : Development
-DEBUG = False
+DEBUG = True 
+# IS_PRODUCTION = os.environ.get('DJANGO_PRODUCTION', 'False') == 'True'
 
 ALLOWED_HOSTS = ['your-app-name.up.railway.app', '127.0.0.1']
 
@@ -85,18 +85,18 @@ LOGIN_URL = '/login/'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('MYSQLDATABASE'),
-        'USER': config('MYSQLUSER'),
-        'PASSWORD': config('MYSQLPASSWORD'),
-        'HOST': config('MYSQLHOST'),  # or your database host
-        'PORT': '3306',       # default MySQL port
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('Database_name'),
+            'USER': config('User'),
+            'PASSWORD': config('Password'),
+            'HOST': config('Host'),
+            'PORT': config('Port'),
+        }
     }
-}
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -133,7 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Add your static files directory
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collected static files
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

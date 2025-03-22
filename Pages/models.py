@@ -28,7 +28,7 @@ class Student_Response(models.Model):
         return f'This is {self.Name} and enrolment number is {self.Enrolment_no}'
 
 class Test_Codes(models.Model):
-    Test_code = models.CharField(max_length=150)
+    Test_code = models.CharField(max_length=500)
     Test_classroom = models.ForeignKey(Create_Test_ClassRoom, on_delete=models.CASCADE)
 
     def __str__(self):
