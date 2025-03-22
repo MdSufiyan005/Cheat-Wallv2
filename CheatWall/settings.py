@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
+import pymysql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+pymysql.install_as_MySQLdb()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -24,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True 
+# DEBUG = False
+# ALLOWED_HOSTS = [os.environ.get('APP_DOMAIN')]
 # IS_PRODUCTION = os.environ.get('DJANGO_PRODUCTION', 'False') == 'True'
 
 ALLOWED_HOSTS = ['your-app-name.up.railway.app', '127.0.0.1']
@@ -53,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'CheatWall.urls'
@@ -79,24 +85,24 @@ LOGIN_URL = '/login/'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': config('Database_name'),
-            'USER': config('User'),
-            'PASSWORD': config('Password'),
-            'HOST': config('Host'),
-            'PORT': config('Port'),
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': config('Database_name'),
+#             'USER': config('User'),
+#             'PASSWORD': config('Password'),
+#             'HOST': config('Host'),
+#             'PORT': config('Port'),
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -137,7 +143,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Add your static files directory
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory for collected static files
+
 # Default primary key field type
+
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
