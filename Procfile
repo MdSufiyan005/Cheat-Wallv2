@@ -1,1 +1,1 @@
-web: gunicorn your_project.wsgi
+web: gunicorn CheatWall.wsgi
